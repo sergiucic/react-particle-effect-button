@@ -60,7 +60,7 @@ export default class ParticleEffectButton extends Component {
     height: 0
   }
 
-  componentWillReceiveProps(props) {
+  componentDidUpdate() {
     if (props.hidden !== this.props.hidden) {
       const { status } = this.state
 
