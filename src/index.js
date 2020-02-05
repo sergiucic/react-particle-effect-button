@@ -2,7 +2,7 @@
  * @class ParticleEffectButton
  */
 
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import anime from 'animejs'
@@ -11,67 +11,31 @@ import raf from 'raf'
 
 import styles from './styles.css'
 
-const noop = () => { }
-
-export default class ParticleEffectButton extends Component {
-  static propTypes = {
-    hidden: PropTypes.bool,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    duration: PropTypes.number,
-    easing: PropTypes.oneOfType([ PropTypes.string, PropTypes.arrayOf(PropTypes.number) ]),
-    type: PropTypes.oneOf([ 'circle', 'rectangle', 'triangle' ]),
-    style: PropTypes.oneOf([ 'fill', 'stroke' ]),
-    direction: PropTypes.oneOf([ 'left', 'right', 'top', 'bottom' ]),
-    canvasPadding: PropTypes.number,
-    size: PropTypes.oneOfType([ PropTypes.number, PropTypes.func ]),
-    speed: PropTypes.oneOfType([ PropTypes.number, PropTypes.func ]),
-    color: PropTypes.string,
-    particlesAmountCoefficient: PropTypes.number,
-    oscillationCoefficient: PropTypes.number,
-    onBegin: PropTypes.func,
-    onComplete: PropTypes.func
+export default class ParticleEffectButton extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      status: null,
+      progress: 0
+    }
+    this._rect = {
+      width: 0,
+      height: 0
+    }
   }
 
-  static defaultProps = {
-    hidden: false,
-    duration: 1000,
-    easing: 'easeInOutCubic',
-    type: 'circle',
-    style: 'fill',
-    direction: 'left',
-    canvasPadding: 150,
-    size: () => Math.floor((Math.random() * 3) + 1),
-    speed: () => rand(4),
-    color: '#000',
-    particlesAmountCoefficient: 3,
-    oscillationCoefficient: 20,
-    onBegin: noop,
-    onComplete: noop
+  componentDidMount() {
+    this.setState({ status: this.props.hidden ? 'hidden' : 'normal' })
   }
 
-  state = {
-    status: this.props.hidden ? 'hidden' : 'normal',
-    progress: 0
-  }
-
-  _rect = {
-    width: 0,
-    height: 0
-  }
-
-  componentDidUpdate() {
-    if (props.hidden !== this.props.hidden) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.hidden !== this.props.hidden) {
       const { status } = this.state
 
-      if (status === 'normal' && props.hidden) {
+      if (status === 'normal' && this.props.hidden) {
         this.setState({ status: 'hiding' }, this._startAnimation)
-      } else if (status === 'hidden' && !props.hidden) {
+      } else if (status === 'hidden' && !this.props.hidden) {
         this.setState({ status: 'showing' }, this._startAnimation)
-      } else if (status === 'hiding' && !props.hidden) {
-        // TODO: show button in middle of hiding animation
-      } else if (status === 'showing' && props.hidden) {
-        // TODO: hide button in middle of showing animation
       }
     }
   }
@@ -321,6 +285,7 @@ export default class ParticleEffectButton extends Component {
     } = this.state
 
     this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
+    // this._canvas && this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
     this._ctx.fillStyle = this._ctx.strokeStyle = color
 
     for (let i = 0; i < this._particles.length; ++i) {
@@ -359,6 +324,44 @@ export default class ParticleEffectButton extends Component {
   _isHorizontal() {
     return this.props.direction === 'left' || this.props.direction === 'right'
   }
+}
+
+const noop = () => { }
+
+ParticleEffectButton.propTypes = {
+  hidden: PropTypes.bool,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  duration: PropTypes.number,
+  easing: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.number)]),
+  type: PropTypes.oneOf(['circle', 'rectangle', 'triangle']),
+  style: PropTypes.oneOf(['fill', 'stroke']),
+  direction: PropTypes.oneOf(['left', 'right', 'top', 'bottom']),
+  canvasPadding: PropTypes.number,
+  size: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+  speed: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+  color: PropTypes.string,
+  particlesAmountCoefficient: PropTypes.number,
+  oscillationCoefficient: PropTypes.number,
+  onBegin: PropTypes.func,
+  onComplete: PropTypes.func
+}
+
+ParticleEffectButton.defaultProps = {
+  hidden: false,
+  duration: 1000,
+  easing: 'easeInOutCubic',
+  type: 'circle',
+  style: 'fill',
+  direction: 'left',
+  canvasPadding: 150,
+  size: () => Math.floor((Math.random() * 3) + 1),
+  speed: () => rand(4),
+  color: '#000',
+  particlesAmountCoefficient: 3,
+  oscillationCoefficient: 20,
+  onBegin: noop,
+  onComplete: noop
 }
 
 function rand (value) {

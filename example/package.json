@@ -5,16 +5,19 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "prop-types": "^15.6.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-particle-effect-button": "link:..",
-    "react-scripts": "^1.1.1"
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-particle-effect-button": "file:../",
+    "react-scripts": "^3.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "browserslist": [
+    "chrome 78"
+  ]
 }
