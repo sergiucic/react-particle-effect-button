@@ -40,6 +40,10 @@ export default class ParticleEffectButton extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.timeout && clearTimeout(this.timeout)
+  }
+
   render() {
     const {
       children,
@@ -139,7 +143,8 @@ export default class ParticleEffectButton extends React.Component {
       begin: onBegin,
       update: (anim) => {
         const value = anim.animatables[0].target.value
-        setTimeout(() => {
+        this.timeout && clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
           this.setState({ progress: value })
         })
 
