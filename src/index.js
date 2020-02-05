@@ -284,8 +284,7 @@ export default class ParticleEffectButton extends React.Component {
       status
     } = this.state
 
-    this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
-    // this._canvas && this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
+    this._canvas ? this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height) : this._ctx.clearRect(0, 0, this._rect.width + this.props.canvasPadding * 2, this._rect.width + this.props.canvasPadding * 2)
     this._ctx.fillStyle = this._ctx.strokeStyle = color
 
     for (let i = 0; i < this._particles.length; ++i) {
