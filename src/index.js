@@ -1,7 +1,6 @@
 /**
  * @class ParticleEffectButton
  */
-
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -31,17 +30,21 @@ export default class ParticleEffectButton extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.hidden !== this.props.hidden) {
       const { status } = this.state
-
       if (status === 'normal' && this.props.hidden) {
-        this.setState({ status: 'hiding' }, this._startAnimation)
+        this.setState({ status: 'hiding'}, this._startAnimation)
       } else if (status === 'hidden' && !this.props.hidden) {
-        this.setState({ status: 'showing' }, this._startAnimation)
-      }
+        this.setState({ status: 'showing'}, this._startAnimation)
+      } 
     }
   }
 
   componentWillUnmount() {
     this.timeout && clearTimeout(this.timeout)
+    this.timeout = false
+    if (this._raf) {
+      raf.cancel(this._raf)
+    }
+    this._startAnimation = null
   }
 
   render() {
@@ -63,8 +66,7 @@ export default class ParticleEffectButton extends React.Component {
     if (status === 'hiding' || status === 'showing') {
       const prop = this._isHorizontal() ? 'translateX' : 'translateY'
       const size = this._isHorizontal() ? this._rect.width : this._rect.height
-      const value = direction === 'left' || direction === 'top'
-        ? progress : -progress
+      const value = direction === 'left' || direction === 'top' ? progress : -progress
       const px = Math.ceil(size * value / 100)
 
       wrapperStyles.transform = `${prop}(${px}px)`
@@ -147,10 +149,7 @@ export default class ParticleEffectButton extends React.Component {
         this.timeout = setTimeout(() => {
           this.setState({ progress: value })
         })
-
-        if (duration) {
-          this._addParticles(value / 100)
-        }
+        this._addParticles(value / 100)
       }
     })
   }

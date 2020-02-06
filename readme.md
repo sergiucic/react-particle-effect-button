@@ -53,7 +53,7 @@ You change the `hidden` boolean prop to kick-off an animation, typically as a re
 | `color`  | string           | '#000'                                  | Particle color. Should match the button content's background color |
 | `children`  | React Node           | undefined                         | The contents of the button. |
 | `duration`  | number           | 1000                                  | Animation duration in milliseconds. |
-| `easing`  | string           | 'easeInOutCubic'                        | Animation easing. |
+| `easing`  | string           | 'easeInOutCubic'                        | Animation easing. list of easings https://animejs.com/documentation/#linearEasing |
 | `type`  | string           | circle                                  | 'circle' or 'rectangle' or 'triangle' |
 | `style`  | string           | fill                                  | 'fill' or 'stroke' |
 | `direction`  | string           | 'left'                                  | 'left' or 'right' or 'top' or 'bottom' |
